@@ -1,0 +1,1023 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STUDYFLOW | Raj Chorei & Arup Sinha Studio</title>
+
+<style>
+:root{
+--bg:#0b1222;--panel:#141f35;--panel2:#1b2944;
+--text:#f4f7ff;--muted:#aab7d0;--blue:#66a6ff;
+--cyan:#57e0d0;--gold:#ffd166;--green:#65dfa0;--red:#ff7373;
+}
+*{box-sizing:border-box}
+body{
+margin:0;background:radial-gradient(circle at top right,#1d3761,#0b1222 48%);
+color:var(--text);font-family:Arial,sans-serif;min-height:100vh
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:1050px;margin:auto;padding:18px}
+.topbar{display:flex;justify-content:space-between;margin-bottom:18px}
+.brand{font-weight:900;letter-spacing:2px;color:var(--cyan)}
+.small,.muted{color:var(--muted)}
+.screen{display:none;animation:slide .3s ease}
+.screen.active{display:block}
+@keyframes slide{
+from{opacity:0;transform:translateY(12px)}
+to{opacity:1;transform:translateY(0)}
+}
+.hero,.tile,.card{
+background:linear-gradient(150deg,var(--panel2),var(--panel));
+border:1px solid #344766;border-radius:18px;padding:20px;
+box-shadow:0 10px 25px #0002
+}
+.hero{text-align:center;padding:30px 20px}
+.welcome{font-size:13px;letter-spacing:3px;color:var(--muted);font-weight:bold}
+.studio{font-size:clamp(22px,4vw,32px);font-weight:900;margin:12px 0}
+.appname{font-size:clamp(38px,8vw,58px);font-weight:950;color:var(--blue);letter-spacing:3px}
+.motto{color:var(--cyan);font-weight:bold}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}
+.tile{color:var(--text);text-align:left;min-height:125px;transition:.2s}
+.tile:hover{transform:translateY(-3px);border-color:var(--blue)}
+.tile h3{margin:8px 0}
+.tile p{color:var(--muted);font-size:14px}
+.emoji{font-size:28px}
+.section-title{font-size:25px}
+.btn{border:0;border-radius:11px;padding:11px 16px;background:var(--blue);color:#071327;font-weight:bold}
+.secondary{background:#2b3c5c;color:white;border:1px solid #526788}
+.green{background:var(--green)}
+.red{background:var(--red)}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}
+.back{margin-bottom:14px}
+.task{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #ffffff20}
+.task input{width:20px;height:20px;accent-color:var(--green)}
+.task.done span{text-decoration:line-through;color:#90a0b8}
+.progress{height:12px;background:#26334a;border-radius:20px;overflow:hidden}
+.progress div{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));width:0;transition:.3s}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.stat{text-align:center}
+.stat strong{display:block;font-size:28px;color:var(--cyan)}
+.schedule-row{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px 0;border-bottom:1px solid #ffffff20}
+.time{color:var(--gold);font-weight:bold}
+.timer{font-size:55px;text-align:center;font-weight:900;color:var(--cyan);margin:18px}
+.field{width:100%;padding:12px;border-radius:10px;border:1px solid #506483;background:#0d172a;color:white;margin:8px 0}
+.quiz-option{display:block;width:100%;text-align:left;padding:13px;border-radius:12px;margin:9px 0;background:#1d2d49;border:1px solid #405777;color:white}
+.quiz-option:disabled{opacity:1;cursor:default}
+.correct{border:2px solid var(--green)!important;background:#164536}
+.wrong{border:2px solid var(--red)!important;background:#4b2630}
+.feedback{font-weight:bold;min-height:28px;margin:12px 0}
+.lesson{margin:10px 0;padding:14px;background:#101b30;border-radius:13px}
+.hidden{display:none!important}
+footer{text-align:center;color:#8293ad;padding:25px}
+.set-button{min-width:130px;min-height:90px}
+.result-heading{text-align:center;color:var(--gold);font-size:25px}
+.result-emoji{text-align:center;font-size:55px;margin:15px}
+.result-message{text-align:center;line-height:1.6;font-size:16px}
+.result-score{text-align:center;font-size:45px;font-weight:900;color:var(--cyan)}
+@media(max-width:520px){
+.wrap{padding:12px}
+.schedule-row{grid-template-columns:90px 1fr}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<div class="topbar">
+<div class="brand">✦ STUDYFLOW</div>
+<div class="small" id="today"></div>
+</div>
+
+<main>
+
+<!-- HOME -->
+<section id="home" class="screen active">
+<div class="hero">
+<div class="welcome">WELCOME TO</div>
+<div class="studio">RAJ CHOREI &amp; ARUP SINHA STUDIO</div>
+<div class="appname">STUDYFLOW</div>
+<div class="motto">Plan Smart. Study Hard. Achieve More.</div>
+<p class="muted">STUDENT TIME PLANNER · Your daily companion for better habits and focused study.</p>
+</div>
+
+<div class="grid">
+<button class="tile" onclick="openPage('tasks')">
+<div class="emoji">✅</div><h3>Daily Tasks</h3>
+<p>Organise your daily activities.</p>
+</button>
+
+<button class="tile" onclick="openPage('timer')">
+<div class="emoji">⏰</div><h3>Study Timetable</h3>
+<p>Timetable, focus timer and breaks.</p>
+</button>
+
+<button class="tile" onclick="openPage('progress')">
+<div class="emoji">📈</div><h3>Progress Tracker</h3>
+<p>Track your study progress.</p>
+</button>
+
+<button class="tile" onclick="openPage('quiz')">
+<div class="emoji">📝</div><h3>MCQ Test</h3>
+<p>3 sets · 60 questions · Instant feedback.</p>
+</button>
+
+<button class="tile" onclick="openPage('lessons')">
+<div class="emoji">📚</div><h3>Lesson Summaries</h3>
+<p>Save your revision notes.</p>
+</button>
+
+<button class="tile" onclick="openPage('tips')">
+<div class="emoji">💡</div><h3>Time Management</h3>
+<p>Improve your daily routine.</p>
+</button>
+</div>
+</section>
+
+<!-- DAILY TASKS -->
+<section id="tasks" class="screen">
+<button class="btn secondary back" onclick="goHome()">← Back</button>
+<h2 class="section-title">✅ Daily Tasks</h2>
+
+<div class="card">
+<p id="taskCount">0 of 15 completed</p>
+<div class="progress"><div id="taskBar"></div></div>
+<div id="taskList"></div>
+<button class="btn secondary" onclick="resetTasks()">Reset tasks</button>
+</div>
+</section>
+
+<!-- TIMETABLE AND TIMER -->
+<section id="timer" class="screen">
+<button class="btn secondary back" onclick="goHome()">← Back</button>
+<h2 class="section-title">⏰ Study Timer &amp; Schedule</h2>
+
+<div class="card">
+<h3>Suggested Student Timetable</h3>
+<div id="schedule"></div>
+</div>
+
+<div class="card" style="margin-top:14px">
+<h3>Focus Session</h3>
+<label>Focus minutes</label>
+<input id="minutes" class="field" type="number" min="1" max="180" value="25">
+
+<div class="timer" id="clock">25:00</div>
+
+<div class="btnrow">
+<button class="btn green" id="startBtn" onclick="startTimer()">▶ Start</button>
+<button class="btn secondary" onclick="pauseTimer()">Ⅱ Pause</button>
+<button class="btn secondary" onclick="resetTimer()">↻ Reset</button>
+</div>
+
+<p id="timerNote" class="muted">Focus for 25 minutes, then take a short break.</p>
+</div>
+</section>
+
+<!-- PROGRESS -->
+<section id="progress" class="screen">
+<button class="btn secondary back" onclick="goHome()">← Back</button>
+<h2 class="section-title">📈 Progress Tracker</h2>
+
+<div class="statgrid">
+<div class="card stat"><strong id="pTasks">0%</strong>Tasks</div>
+<div class="card stat"><strong id="pMinutes">0</strong>Focus minutes</div>
+<div class="card stat"><strong id="pQuizzes">0</strong>Quizzes</div>
+<div class="card stat"><strong id="pBest">—</strong>Best score</div>
+</div>
+
+<div class="card" style="margin-top:14px">
+<h3>Task completion</h3>
+<div class="progress"><div id="progressBar"></div></div>
+<p id="progressText"></p>
+
+<h3>MCQ Set Scores</h3>
+<div id="setScores"></div>
+
+<h3>Quiz History</h3>
+<div id="history"></div>
+</div>
+</section>
+
+<!-- MCQ SET SELECTION -->
+<section id="quiz" class="screen">
+<button class="btn secondary back" onclick="goHome()">← Back</button>
+<h2 class="section-title">📝 MCQ Test</h2>
+
+<div id="quizSets" class="card">
+<div class="small">3 SETS · 20 QUESTIONS EACH · 60 TOTAL</div>
+<h3>Choose Your MCQ Set</h3>
+<p class="muted">Select a set to begin your test.</p>
+
+<div class="grid">
+<button class="tile set-button" onclick="startQuiz(0)">
+<div class="emoji">📘</div>
+<h3>SET 1</h3>
+<p>Study Skills &amp; Time Management</p>
+</button>
+
+<button class="tile set-button" onclick="startQuiz(1)">
+<div class="emoji">📗</div>
+<h3>SET 2</h3>
+<p>Learning &amp; Education</p>
+</button>
+
+<button class="tile set-button" onclick="startQuiz(2)">
+<div class="emoji">📙</div>
+<h3>SET 3</h3>
+<p>General Knowledge &amp; Science</p>
+</button>
+</div>
+</div>
+
+<!-- QUESTION SCREEN -->
+<div id="quizArea" class="card hidden">
+<div class="small" id="setLabel">SET 1</div>
+<p id="qNumber"></p>
+<div class="progress"><div id="quizBar"></div></div>
+
+<h3 id="question" style="margin-top:20px"></h3>
+<div id="options"></div>
+<div id="feedback" class="feedback"></div>
+
+<div class="btnrow">
+<button class="btn secondary" id="backQ" onclick="previousQuestion()">← Back</button>
+<button class="btn" id="nextQ" onclick="nextQuestion()" disabled>Next →</button>
+<button class="btn secondary" onclick="showSets()">All Sets</button>
+</div>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div id="result" class="card hidden" style="margin-top:14px">
+
+<h2 class="result-heading" id="congratulations">🎉 Congratulations!</h2>
+<div class="result-emoji" id="resultEmoji">🏆</div>
+<div class="result-score" id="scoreText">0/20</div>
+
+<h2 id="grade" style="text-align:center"></h2>
+<p id="resultMessage" class="result-message"></p>
+
+<div class="progress">
+<div id="resultBar"></div>
+</div>
+
+<p id="resultAdvice" class="muted" style="text-align:center"></p>
+
+<div class="btnrow">
+<button class="btn green" onclick="restartQuiz()">Try Again</button>
+<button class="btn secondary" onclick="showSets()">Choose Another Set</button>
+<button class="btn secondary" onclick="goHome()">Home</button>
+</div>
+</div>
+</section>
+
+<!-- LESSON SUMMARIES -->
+<section id="lessons" class="screen">
+<button class="btn secondary back" onclick="goHome()">← Back</button>
+<h2 class="section-title">📚 Lesson Summaries</h2>
+
+<div class="card">
+<h3>Save Your Own Notes</h3>
+<input id="lessonTitle" class="field" placeholder="Lesson title">
+<textarea id="lessonNotes" class="field" rows="5" placeholder="Write your summary here..."></textarea>
+<button class="btn green" onclick="saveLesson()">Save Summary</button>
+<div id="savedLessons"></div>
+</div>
+</section>
+
+<!-- TIME MANAGEMENT -->
+<section id="tips" class="screen">
+<button class="btn secondary back" onclick="goHome()">← Back</button>
+<h2 class="section-title">💡 Time Management Tips</h2>
+
+<div class="card">
+<h3>1. Plan your day</h3>
+<p>Write down important tasks before starting.</p>
+
+<h3>2. Set priorities</h3>
+<p>Complete important schoolwork first.</p>
+
+<h3>3. Avoid distractions</h3>
+<p>Keep your phone away during focused study.</p>
+
+<h3>4. Take breaks</h3>
+<p>Short breaks help you refresh your mind.</p>
+
+<h3>5. Revise regularly</h3>
+<p>Review lessons instead of waiting until exams.</p>
+
+<h3>6. Sleep well</h3>
+<p>Give your body enough time to rest.</p>
+
+<h3>7. Stay consistent</h3>
+<p>Small daily efforts can make a big difference.</p>
+</div>
+</section>
+
+</main>
+
+<footer>STUDYFLOW · RAJ CHOREI &amp; ARUP SINHA STUDIO</footer>
+</div>
+
+<script>
+
+/* =================================
+   SOUND EFFECT
+================================= */
+
+let audioContext;
+
+function sound(){
+try{
+const C=window.AudioContext||window.webkitAudioContext;
+if(!C)return;
+
+if(!audioContext)audioContext=new C();
+
+if(audioContext.state==="suspended")audioContext.resume();
+
+const o=audioContext.createOscillator();
+const g=audioContext.createGain();
+
+o.frequency.value=650;
+g.gain.setValueAtTime(.045,audioContext.currentTime);
+g.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.10);
+
+o.connect(g);
+g.connect(audioContext.destination);
+
+o.start();
+o.stop(audioContext.currentTime+.10);
+}catch(e){}
+}
+
+/* =================================
+   SAVED APP DATA
+================================= */
+
+let state;
+
+try{
+state=JSON.parse(localStorage.getItem("studyflow_state"))||{};
+}catch(e){state={};}
+
+state.done=Array.isArray(state.done)?state.done:[];
+state.minutes=Number(state.minutes)||0;
+state.quizzes=Array.isArray(state.quizzes)?state.quizzes:[];
+state.lessons=Array.isArray(state.lessons)?state.lessons:[];
+state.best=state.best&&typeof state.best==="object"?state.best:{};
+
+function save(){
+localStorage.setItem("studyflow_state",JSON.stringify(state));
+}
+
+/* =================================
+   NAVIGATION
+================================= */
+
+function openPage(id){
+sound();
+
+document.querySelectorAll(".screen").forEach(x=>{
+x.classList.remove("active");
+});
+
+document.getElementById(id).classList.add("active");
+
+if(id==="progress")renderProgress();
+if(id==="lessons")renderLessons();
+
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function goHome(){
+openPage("home");
+}
+
+document.getElementById("today").textContent=
+new Date().toLocaleDateString(undefined,{
+weekday:"short",day:"numeric",month:"short"
+});
+
+/* =================================
+   DAILY TASKS - 15
+================================= */
+
+const TASKS=[
+"Wake up on time",
+"Make your bed",
+"Morning exercise or stretching",
+"Take a healthy breakfast",
+"Prepare school materials",
+"Attend school",
+"Review today's lessons",
+"Complete homework",
+"Take a short break",
+"Revise difficult subjects",
+"Practise mathematics",
+"Read a book",
+"Prepare for tomorrow",
+"Organise your study desk",
+"Sleep on time"
+];
+
+function renderTasks(){
+const box=document.getElementById("taskList");
+box.innerHTML="";
+
+TASKS.forEach((t,i)=>{
+const row=document.createElement("label");
+row.className="task"+(state.done.includes(i)?" done":"");
+
+const cb=document.createElement("input");
+cb.type="checkbox";
+cb.checked=state.done.includes(i);
+
+const span=document.createElement("span");
+span.textContent=(i+1)+". "+t;
+
+cb.addEventListener("change",()=>{
+sound();
+
+if(cb.checked&&!state.done.includes(i)){
+state.done.push(i);
+}else{
+state.done=state.done.filter(n=>n!==i);
+}
+
+save();
+renderTasks();
+});
+
+row.append(cb,span);
+box.appendChild(row);
+});
+
+let n=state.done.length;
+
+document.getElementById("taskCount").textContent=
+`${n} of 15 completed`;
+
+document.getElementById("taskBar").style.width=
+(n/15*100)+"%";
+}
+
+function resetTasks(){
+if(confirm("Reset all task ticks?")){
+sound();
+state.done=[];
+save();
+renderTasks();
+}
+}
+
+/* =================================
+   STUDY TIMETABLE - 15 ENTRIES
+================================= */
+
+const SCHEDULE=[
+["6:00 AM","Wake up and get ready"],
+["6:30 AM","Morning revision"],
+["7:00 AM","Breakfast"],
+["7:30 AM","Prepare school materials"],
+["8:00 AM","School preparation / travel"],
+["School","Attend classes"],
+["3:00 PM","Return home and relax"],
+["3:30 PM","Snack and refresh"],
+["4:00 PM","Mathematics practice"],
+["4:45 PM","Science study"],
+["5:30 PM","Short break"],
+["6:00 PM","Social Science revision"],
+["7:00 PM","English and language practice"],
+["8:00 PM","Homework and dinner"],
+["9:00 PM","Quick revision and prepare for sleep"]
+];
+
+document.getElementById("schedule").innerHTML=
+SCHEDULE.map(([t,a])=>
+`<div class="schedule-row">
+<div class="time">${t}</div>
+<div>${a}</div>
+</div>`
+).join("");
+
+/* =================================
+   STUDY TIMER
+================================= */
+
+let remaining=1500;
+let interval=null;
+
+function showClock(){
+document.getElementById("clock").textContent=
+String(Math.floor(remaining/60)).padStart(2,"0")+":"+
+String(remaining%60).padStart(2,"0");
+}
+
+function startTimer(){
+sound();
+
+if(interval||remaining<=0)return;
+
+document.getElementById("startBtn").textContent="▶ Running";
+
+interval=setInterval(()=>{
+remaining--;
+showClock();
+
+if(remaining<=0){
+clearInterval(interval);
+interval=null;
+
+let mins=Number(document.getElementById("minutes").value)||25;
+state.minutes+=mins;
+save();
+
+document.getElementById("startBtn").textContent="▶ Start";
+document.getElementById("timerNote").textContent=
+"🎉 Session complete! Take a short break.";
+
+sound();
+}
+},1000);
+}
+
+function pauseTimer(){
+sound();
+clearInterval(interval);
+interval=null;
+document.getElementById("startBtn").textContent="▶ Resume";
+}
+
+function resetTimer(){
+sound();
+clearInterval(interval);
+interval=null;
+
+let m=Math.min(180,Math.max(1,
+Number(document.getElementById("minutes").value)||25));
+
+remaining=m*60;
+showClock();
+
+document.getElementById("startBtn").textContent="▶ Start";
+document.getElementById("timerNote").textContent="Timer reset.";
+}
+
+document.getElementById("minutes").addEventListener("change",()=>{
+sound();
+if(!interval)resetTimer();
+});
+
+showClock();
+
+/* =================================
+   PROGRESS TRACKER
+================================= */
+
+function renderProgress(){
+
+let pct=Math.round(state.done.length/15*100);
+
+document.getElementById("pTasks").textContent=pct+"%";
+document.getElementById("pMinutes").textContent=state.minutes;
+document.getElementById("pQuizzes").textContent=state.quizzes.length;
+
+let scores=Object.values(state.best);
+document.getElementById("pBest").textContent=
+scores.length?Math.max(...scores)+"/20":"—";
+
+document.getElementById("progressBar").style.width=pct+"%";
+
+document.getElementById("progressText").textContent=
+`${state.done.length} of 15 tasks completed.`;
+
+document.getElementById("setScores").innerHTML=
+[0,1,2].map(i=>
+`<p>Set ${i+1}: <b>${state.best[i]===undefined?"Not attempted":state.best[i]+"/20"}</b></p>`
+).join("");
+
+document.getElementById("history").innerHTML=
+state.quizzes.length?
+state.quizzes.slice(-10).reverse().map(x=>
+`<p>${new Date(x.date).toLocaleDateString()} —
+<b>Set ${x.set+1}: ${x.score}/20</b> — ${x.grade}</p>`
+).join("")
+:"No quiz completed yet.";
+}
+
+/* =================================
+   MCQ DATABASE - 60 QUESTIONS
+   FORMAT: Question, Options, Answer, Explanation
+================================= */
+
+const QUIZ_SETS=[
+
+/* SET 1 */
+[
+["What is time management?",["Doing everything at once","Planning and organising time effectively","Avoiding all activities","Studying without breaks"],1,"Time management means using available time wisely."],
+["Which task should usually be done first?",["An urgent important assignment","A random activity","Checking social media","Decorating notes"],0,"Prioritise important and urgent responsibilities."],
+["What is a timetable?",["A list of games","A plan showing activities and their times","A collection of books","A marksheet"],1,"A timetable gives structure to your day."],
+["What is the Pomodoro method commonly based on?",["Focused work intervals with breaks","Studying all night","Avoiding revision","Doing many tasks together"],0,"It uses focused sessions separated by short breaks."],
+["Why should students revise regularly?",["To avoid learning new things","To strengthen memory and understanding","To make lessons longer","To skip homework"],1,"Regular revision reinforces learning."],
+["What is a realistic study goal?",["Finish an entire textbook in ten minutes","Complete a specific chapter and practise questions","Never take breaks","Study without a plan"],1,"Specific goals are easier to track."],
+["What should you do when distracted?",["Give up immediately","Return attention to the planned task","Start another unrelated task","Forget the timetable"],1,"Return your attention to the task."],
+["Why are breaks useful?",["They waste all study time","They help refresh attention","They replace studying","They guarantee full marks"],1,"Short breaks can support concentration."],
+["What is procrastination?",["Starting early","Delaying a task unnecessarily","Planning ahead","Reviewing notes"],1,"Procrastination means putting off tasks."],
+["How can you remember homework?",["Depend only on memory","Write it in a planner","Ignore the instructions","Wait until the deadline"],1,"Recording tasks makes them easier to remember."],
+["What is active learning?",["Only rereading a page","Testing yourself and explaining ideas","Looking at a book without thinking","Avoiding questions"],1,"Active learning involves engaging with material."],
+["What should you do after a practice test?",["Ignore the result","Review mistakes and understand them","Throw away the paper","Only count correct answers"],1,"Mistakes show what you need to revise."],
+["Why is sleep important for students?",["It is always wasted time","It supports memory, health and attention","It replaces homework","It prevents learning"],1,"Sleep supports learning and wellbeing."],
+["What is multitasking?",["Focusing on one task","Trying to do multiple tasks at once","Taking a planned break","Making a timetable"],1,"Switching between tasks can reduce focus."],
+["How should you handle a difficult subject?",["Avoid it forever","Break it into smaller topics and practise","Study it only before exams","Guess every answer"],1,"Smaller steps make difficult work manageable."],
+["What is a good revision method?",["Read once and never return","Recall key ideas without looking at notes","Memorise page numbers","Skip difficult concepts"],1,"Active recall strengthens understanding."],
+["Why prepare school materials the night before?",["To avoid attending school","To reduce morning stress and forgotten items","To increase homework","To remove the timetable"],1,"Preparation saves time the next morning."],
+["You have 90 minutes for three subjects. What should you do?",["Study only the easiest subject","Divide time according to each subject's needs","Switch randomly every minute","Decorate your notebook"],1,"Allocate time based on priorities."],
+["What should a balanced timetable include?",["Only study","Study, breaks, meals and sleep","No free time","Every minute filled with work"],1,"A balanced routine includes rest."],
+["How can you check whether your plan works?",["Count your pens","Review completed tasks and learning","Never change your plan","Only check the clock"],1,"Review progress and adjust your routine."]
+],
+
+/* SET 2 */
+[
+["What does active recall mean?",["Trying to remember without looking","Copying a paragraph","Reading while distracted","Skipping revision"],0,"Active recall means retrieving information from memory."],
+["Which method helps with a long chapter?",["Divide it into smaller sections","Read it once as fast as possible","Ignore headings","Memorise everything at once"],0,"Breaking work into sections makes it manageable."],
+["What is the purpose of a summary?",["Present main ideas briefly","Add unrelated details","Replace every textbook","Make a topic confusing"],0,"A summary presents the important points."],
+["How can you improve in mathematics?",["Practise problems and review errors","Only read solved answers","Avoid calculations","Memorise question numbers"],0,"Practice helps develop mathematical understanding."],
+["What is a primary source in history?",["Evidence from the time being studied","A modern opinion only","A fictional story","A random summary"],0,"Primary sources come directly from the period studied."],
+["Which is useful when reading a science chapter?",["Understand terms and processes","Skip diagrams always","Memorise without meaning","Avoid examples"],0,"Understanding processes helps explain science."],
+["What should you do with a new word?",["Check its meaning and use it","Ignore it","Guess every time","Avoid using it"],0,"Using new words helps develop vocabulary."],
+["Why use headings in notes?",["To organise information","To hide key points","To make notes longer","To remove structure"],0,"Headings make information easier to find."],
+["What is peer learning?",["Learning with classmates","Studying without discussion","Copying homework","Avoiding feedback"],0,"Peer learning involves learning together."],
+["Which is a good revision cycle?",["Learn, recall, check, revisit","Read once and stop","Skip checking","Only study familiar topics"],0,"Repeated revision reinforces knowledge."],
+["What is a learning objective?",["What you aim to learn","A school holiday","A random page number","A decoration"],0,"An objective describes the intended learning."],
+["How should you approach a multi-step question?",["Work through each step carefully","Guess without reading","Skip all working","Write unrelated facts"],0,"Careful steps help avoid mistakes."],
+["What helps make writing clearer?",["Plan ideas and organise paragraphs","Use no punctuation","Mix every idea together","Avoid checking"],0,"Organised paragraphs improve clarity."],
+["What is feedback useful for?",["Showing what to improve","Making learning impossible","Replacing practice","Hiding mistakes"],0,"Feedback helps identify areas for improvement."],
+["Which is a sensible screen habit while studying?",["Use only what supports the task","Keep switching apps","Watch unrelated clips","Reply to every alert"],0,"Avoid unnecessary distractions."],
+["What does consistency mean?",["Working regularly over time","Working only once","Waiting for motivation every day","Changing goals every minute"],0,"Consistency means making regular effort."],
+["Why solve sample papers?",["To practise exam-style questions","To avoid learning concepts","To predict every exact question","To replace all lessons"],0,"Sample papers help practise exam skills."],
+["What should you do after finishing a topic?",["Check what you can explain and solve","Forget it immediately","Never revise it","Move on without checking"],0,"Testing your understanding shows what you know."],
+["Which is a good way to prepare an answer?",["Understand the question and organise points","Write anything quickly","Ignore the marks","Copy an unrelated answer"],0,"Understand the question before answering."],
+["What is a useful way to track progress?",["Record completed goals and areas to improve","Rely only on memory","Never check work","Count study books"],0,"Tracking helps you see your progress."]
+],
+
+/* SET 3 */
+[
+["Which planet is known as the Red Planet?",["Mars","Venus","Jupiter","Mercury"],0,"Mars is called the Red Planet."],
+["How many days are there in a leap year?",["366","365","364","360"],0,"A leap year has 366 days."],
+["Which gas do plants absorb during photosynthesis?",["Carbon dioxide","Oxygen","Nitrogen","Hydrogen"],0,"Plants absorb carbon dioxide."],
+["What is the largest ocean on Earth?",["Pacific Ocean","Indian Ocean","Atlantic Ocean","Arctic Ocean"],0,"The Pacific is the largest ocean."],
+["Which organ pumps blood around the body?",["Heart","Lungs","Brain","Kidney"],0,"The heart pumps blood."],
+["What is H2O commonly called?",["Water","Oxygen","Salt","Hydrogen"],0,"H2O is the chemical formula for water."],
+["How many sides does a hexagon have?",["6","5","7","8"],0,"A hexagon has six sides."],
+["Which is the nearest star to Earth?",["The Sun","Sirius","Polaris","Vega"],0,"The Sun is Earth's nearest star."],
+["Which instrument measures temperature?",["Thermometer","Barometer","Compass","Ruler"],0,"A thermometer measures temperature."],
+["What is the process by which water vapour becomes liquid?",["Condensation","Evaporation","Melting","Freezing"],0,"Condensation changes vapour into liquid."],
+["Which part of a plant usually absorbs water from soil?",["Roots","Flowers","Fruit","Leaves only"],0,"Roots absorb water and minerals."],
+["Which language is used to structure a web page?",["HTML","MP3","JPEG","PDF"],0,"HTML structures web pages."],
+["Which direction does a compass needle generally point?",["North","South","East","West"],0,"A compass needle aligns approximately north-south."],
+["How many minutes are in one hour?",["60","30","90","100"],0,"One hour contains 60 minutes."],
+["Which is a renewable energy source?",["Solar energy","Coal","Petrol","Natural gas"],0,"Solar energy is renewable."],
+["What is the boiling point of water at sea level?",["100°C","50°C","80°C","120°C"],0,"Water boils at about 100°C at sea level."],
+["Which shape has three sides?",["Triangle","Square","Circle","Rectangle"],0,"A triangle has three sides."],
+["Which force pulls objects toward Earth?",["Gravity","Friction","Magnetism","Electricity"],0,"Gravity attracts objects toward Earth."],
+["What do bees collect from flowers?",["Nectar","Sand","Leaves","Bark"],0,"Bees collect nectar from flowers."],
+["Which device is used to type text into a computer?",["Keyboard","Monitor","Speaker","Printer"],0,"A keyboard is used to enter text."]
+]
+
+];
+
+/* =================================
+   MCQ NAVIGATION AND ANSWERS
+================================= */
+
+let currentSet=0;
+let qi=0;
+let answers=[];
+let answered=false;
+let score=0;
+
+function hideQuizViews(){
+document.getElementById("quizSets").classList.add("hidden");
+document.getElementById("quizArea").classList.add("hidden");
+document.getElementById("result").classList.add("hidden");
+}
+
+function showSets(){
+sound();
+hideQuizViews();
+document.getElementById("quizSets").classList.remove("hidden");
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function startQuiz(set){
+sound();
+
+currentSet=set;
+qi=0;
+score=0;
+answers=Array(20).fill(null);
+
+hideQuizViews();
+document.getElementById("quizArea").classList.remove("hidden");
+
+document.getElementById("setLabel").textContent=
+"SET "+(set+1);
+
+renderQuestion();
+}
+
+function renderQuestion(){
+
+let q=QUIZ_SETS[currentSet][qi];
+
+document.getElementById("qNumber").textContent=
+"Question "+(qi+1)+" of 20";
+
+document.getElementById("quizBar").style.width=
+((qi+1)/20*100)+"%";
+
+document.getElementById("question").textContent=q[0];
+
+document.getElementById("feedback").textContent="";
+
+let options=document.getElementById("options");
+options.innerHTML="";
+
+q[1].forEach((option,i)=>{
+
+let b=document.createElement("button");
+b.className="quiz-option";
+b.textContent=String.fromCharCode(65+i)+". "+option;
+
+b.addEventListener("click",()=>chooseAnswer(i));
+
+if(answers[qi]!==null){
+
+b.disabled=true;
+
+if(i===q[2])b.classList.add("correct");
+if(i===answers[qi]&&i!==q[2])b.classList.add("wrong");
+}
+
+options.appendChild(b);
+});
+
+if(answers[qi]!==null){
+showFeedback();
+}
+
+document.getElementById("backQ").disabled=qi===0;
+
+document.getElementById("nextQ").disabled=
+answers[qi]===null;
+
+document.getElementById("nextQ").textContent=
+qi===19?"See Results →":"Next →";
+}
+
+function chooseAnswer(i){
+
+if(answers[qi]!==null)return;
+
+sound();
+
+answers[qi]=i;
+
+renderQuestion();
+showFeedback();
+
+document.getElementById("nextQ").disabled=false;
+}
+
+function showFeedback(){
+
+let q=QUIZ_SETS[currentSet][qi];
+let chosen=answers[qi];
+
+let feedback=document.getElementById("feedback");
+
+if(chosen===q[2]){
+feedback.style.color="var(--green)";
+feedback.textContent="✓ Correct! "+q[3];
+}else{
+feedback.style.color="var(--red)";
+feedback.textContent="✕ Incorrect. "+q[3];
+}
+}
+
+function previousQuestion(){
+
+if(qi<=0)return;
+
+sound();
+qi--;
+renderQuestion();
+}
+
+function nextQuestion(){
+
+if(answers[qi]===null)return;
+
+sound();
+
+if(qi<19){
+qi++;
+renderQuestion();
+}else{
+showResult();
+}
+}
+
+/* =================================
+   FINAL RESULT AND FIVE RATINGS
+================================= */
+
+function showResult(){
+
+score=answers.reduce((total,answer,i)=>{
+return total+(answer===QUIZ_SETS[currentSet][i][2]?1:0);
+},0);
+
+let rating="";
+let emoji="";
+let message="";
+
+if(score<=7){
+
+rating="KEEP TRYING";
+emoji="😊";
+message=
+"😊 Don't feel bad! Every attempt helps you learn. "+
+"Review the answers and practise a little more. "+
+"Believe in yourself. You can improve!";
+
+}else if(score<=11){
+
+rating="AVERAGE";
+emoji="🙂";
+message=
+"🙂 Good effort! You have started well. "+
+"Revise the questions you missed and keep practising. "+
+"You can do even better!";
+
+}else if(score<=15){
+
+rating="GOOD";
+emoji="👍";
+message=
+"👍 Good job! You understand many of the questions. "+
+"Keep revising and work on the topics you missed. "+
+"Keep moving forward!";
+
+}else if(score<=18){
+
+rating="VERY GOOD";
+emoji="🌟";
+message=
+"🌟 Very good work! Your effort is showing. "+
+"You are doing great. Keep practising and aim even higher!";
+
+}else{
+
+rating="EXCELLENT";
+emoji="🏆";
+message=
+"🏆 Excellent! Outstanding performance! "+
+"Your hard work and consistency are paying off. "+
+"Keep this amazing effort going!";
+}
+
+let history={
+set:currentSet,
+score:score,
+grade:rating,
+date:new Date().toISOString()
+};
+
+state.quizzes.push(history);
+
+if(state.best[currentSet]===undefined||
+score>state.best[currentSet]){
+state.best[currentSet]=score;
+}
+
+save();
+
+document.getElementById("quizArea").classList.add("hidden");
+document.getElementById("result").classList.remove("hidden");
+
+document.getElementById("congratulations").textContent=
+"🎉 Congratulations! You completed Set "+(currentSet+1)+"!";
+
+document.getElementById("resultEmoji").textContent=emoji;
+
+document.getElementById("scoreText").textContent=
+score+" / 20";
+
+document.getElementById("grade").textContent=rating;
+
+document.getElementById("resultMessage").textContent=message;
+
+document.getElementById("resultBar").style.width=
+(score/20*100)+"%";
+
+document.getElementById("resultAdvice").textContent=
+"Your score: "+Math.round(score/20*100)+"%";
+
+renderProgress();
+
+window.scrollTo({top:0,behavior:"smooth"});
+
+sound();
+}
+
+function restartQuiz(){
+sound();
+startQuiz(currentSet);
+}
+
+/* =================================
+   LESSON SUMMARIES
+================================= */
+
+function saveLesson(){
+
+let title=document.getElementById("lessonTitle").value.trim();
+let notes=document.getElementById("lessonNotes").value.trim();
+
+if(!title||!notes){
+alert("Please enter a lesson title and summary.");
+return;
+}
+
+sound();
+
+state.lessons.push({
+title:title,
+notes:notes,
+date:new Date().toISOString()
+});
+
+save();
+
+document.getElementById("lessonTitle").value="";
+document.getElementById("lessonNotes").value="";
+
+renderLessons();
+}
+
+function renderLessons(){
+
+let box=document.getElementById("savedLessons");
+box.innerHTML="<h3>Your Saved Summaries</h3>";
+
+if(!state.lessons.length){
+box.innerHTML+="<p class='muted'>No summaries saved yet.</p>";
+return;
+}
+
+state.lessons.forEach((lesson,i)=>{
+
+let div=document.createElement("div");
+div.className="lesson";
+
+let title=document.createElement("h3");
+title.textContent=lesson.title;
+
+let notes=document.createElement("p");
+notes.textContent=lesson.notes;
+
+let del=document.createElement("button");
+del.className="btn secondary";
+del.textContent="Delete";
+
+del.onclick=()=>{
+sound();
+
+if(confirm("Delete this summary?")){
+state.lessons.splice(i,1);
+save();
+renderLessons();
+}
+};
+
+div.append(title,notes,del);
+box.appendChild(div);
+});
+}
+
+/* =================================
+   INITIALISE APP
+================================= */
+
+renderTasks();
+renderProgress();
+renderLessons();
+
+</script>
+</body>
+</html>
